@@ -1,35 +1,103 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from "react";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  // State to store all input values
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+    email: "",
+    address: "",
+  });
+
+  // Update state on input change
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  // Handle form submission
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("Form data submitted:", formData);
+    alert(`Submitted data:\n${JSON.stringify(formData, null, 2)}`);
+    setFormData({
+      username: "",
+      password: "",
+      email: "",
+      address: "",
+    });
+
+    // Here you can send data to API or backend
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <form
+      onSubmit={handleSubmit}
+      className="max-w-md mx-auto p-4 border rounded"
+    >
+      <h2 className="text-2xl font-bold mb-4">User Registration</h2>
 
-export default App
+      <label className="block mb-2">
+        Username:
+        <input
+          type="text"
+          name="username"
+          value={formData.username}
+          onChange={handleChange}
+          required
+          className="w-full border border-gray-300 p-2 rounded mt-1"
+          placeholder="Enter username"
+        />
+      </label>
+
+      <label className="block mb-2">
+        Password:
+        <input
+          type="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+          className="w-full border border-gray-300 p-2 rounded mt-1"
+          placeholder="Enter password"
+        />
+      </label>
+
+      <label className="block mb-2">
+        Email:
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+          className="w-full border border-gray-300 p-2 rounded mt-1"
+          placeholder="Enter email"
+        />
+      </label>
+
+      <label className="block mb-4">
+        Address:
+        <textarea
+          name="address"
+          value={formData.address}
+          onChange={handleChange}
+          rows={3}
+          className="w-full border border-gray-300 p-2 rounded mt-1"
+          placeholder="Enter address"
+        />
+      </label>
+
+      <button
+        type="submit"
+        className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
+      >
+        Submit
+      </button>
+    </form>
+  );
+}
