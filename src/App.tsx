@@ -1,59 +1,33 @@
-import React, { useState, useMemo } from "react";
-
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-}
+import  { useState } from "react";
+import List from "./List";
 
 export default function App() {
-  const [searchText, setSearchText] = useState("");
+  const [number, setNumber] = useState(1);
+  const [dark, setDark] = useState(false);
 
-  const [products] = useState<Product[]>([
-    { id: 1, name: "Sai Kiran", price: 100 },
-    { id: 2, name: "Subbu", price: 200 },
-    { id: 3, name: "Faiz", price: 300 },
-    { id: 4, name: "Anil", price: 400 },
-    { id: 5, name: "Karthik", price: 500 },
-  ]);
+  const getItems = () => {
+    return [number, number + 1, number + 2];
+         
+  };
+  console.log(typeof getItems )
 
-  // 👇 useMemo to cache filtered results unless searchText/products change
-  const filteredProducts = useMemo(() => {
-    console.log("Filtering products...");
-    return products.filter((p) =>
-      p.name.toLowerCase().includes(searchText.toLowerCase())
-    );
-  }, [searchText]);
-
+  const theme = {
+    backgroundColor: dark ? "#333" : "#FFF",
+    color: dark ? "#FFF" : "#333",
+  };
   return (
-    <div>
-      <h1>useMemo Search Optimization</h1>
-
-      <input
-        type="text"
-        placeholder="Search by name..."
-        value={searchText}
-        onChange={(e) => setSearchText(e.target.value)}
+    <div style={theme}>
+      <input 
+        type="number"
+        value={number}
+        onChange={(e) => setNumber(parseInt(e.target.value))}
       />
+      <button onClick={() => setDark((prevDark) => !prevDark)}>
 
-      <table border={1} cellPadding={5}>
-        <thead>
-          <tr>
-            <th>S.No</th>
-            <th>Name</th>
-            <th>Price</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredProducts.map((p) => (
-            <tr key={p.id}>
-              <td>{p.id}</td>
-              <td>{p.name}</td>
-              <td>{p.price}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        Toggle theme
+
+      </button>
+      <List getItems={getItems} />
     </div>
   );
 }
