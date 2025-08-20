@@ -13,5 +13,4 @@ export default function List(s) {
   }, [getItems]);
   return items.map((item) => <div key={item}>{item}</div>);
 
-  sdfa;
-}
+  
